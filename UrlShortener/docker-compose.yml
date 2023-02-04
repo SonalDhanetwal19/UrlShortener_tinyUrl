@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  mysql-local:
+    image:  mysql:latest
+    environment:
+      MYSQL_DATABASE: shortener
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+
+  myapp-main:
+    build:
+      context:  .
+      dockerfile: Dockerfile
+    image: urlshortener:v1
+    restart: on-failure
+    depends_on:
+      - mysql-local
+    ports:
+      - 8080:8080

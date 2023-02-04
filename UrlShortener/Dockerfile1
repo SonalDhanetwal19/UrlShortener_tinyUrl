@@ -1,0 +1,17 @@
+FROM maven:3-jdk-11-slim AS build
+COPY src /usr/src/app/src
+COPY pom.xml /usr/src/app
+
+#RUN mvn -f /usr/src/app/pom.xml clean package -DskipTests=true
+#COPY ./src/target/UrlShortener-0.0.1-SNAPSHOT.jar /usr/src/app/target/app.jar
+COPY ./src/target/UrlShortener-0.0.1-SNAPSHOT.jar /usr/src/app/urlShortener-0.0.1-SNAPSHOT.jar
+
+FROM adoptopenjdk/openjdk11
+# COPY --from=build /usr/src/app/target/urlShortener-0.0.1-SNAPSHOT.jar /usr/src/app/urlShortener-0.0.1-SNAPSHOT.jar
+#COPY --from=build /usr/src/app/target/*.jar /usr/src/app/urlShortener-0.0.1-SNAPSHOT.jar
+#COPY src/target/UrlShortener-0.0.1-SNAPSHOT.jar /usr/src/app/target/app.jar
+
+EXPOSE 8080
+# ENTRYPOINT ["java","-jar","usr/src/app/urlShortener-0.0.1-SNAPSHOT.jar"]
+# Run the jar file
+CMD java -Dspring.profiles.active=local -jar /usr/src/app/urlShortener-0.0.1-SNAPSHOT.jar

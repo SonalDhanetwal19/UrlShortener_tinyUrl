@@ -1,0 +1,18 @@
+# Start with a base image containing Java runtime
+FROM adoptopenjdk/openjdk11
+# Create work folder
+RUN mkdir /work
+
+# Make port 8222 available to the world outside this container
+EXPOSE 8229
+
+# Copying the application's jar file inside the container
+COPY app/target/api-organization-profile-app-1.0-SNAPSHOT.jar /work/app.jar
+
+# Copy the secrets.properties from local system to container
+# COPY app/src/main/resources/data /data
+
+
+
+# Run the jar file 
+CMD java -Dspring.profiles.active=local -jar /work/app.jar
